@@ -24,16 +24,17 @@ print('sunlight hours')
 print sunlightHours
 
 print('sunlight total minutes')
-totalsunMinutes = (abs(sun['sunrise'].hour-sun['sunset'].hour)*60)+abs(sun['sunset'].minute-sun['sunrise'].minute)
+totalsunMinutes = (abs(sun['sunrise'].hour-sun['sunset'].hour)*60)+(sun['sunset'].minute-sun['sunrise'].minute)
 print totalsunMinutes
 
 global cam_pan
 global cam_tilt
-cam_pan = 0
-cam_tilt = 0
+cam_pan = 100
+cam_tilt = 220
 # Turn the camera to the default position
 pan(110)
 tilt(90)
+print('before')
 sleep(5)
 
 
@@ -85,6 +86,13 @@ while True:
     eastern = timezones('US/Eastern')
     loc_dt = datetime.datetime.now(eastern)
     print(loc_dt)
+    
+    #if time is after sunset run sunrise function
+    if loc_dt.hour <= sun['sunrise'].hour:
+        #if loc_dt.minute >= sun['sunset'].minute:
+        sunrise()
+        print('sunrise')
+
     #If time is equal to the runrise run sunrise fuction
     if loc_dt.hour == sun['sunrise'].hour:
 	if loc_dt.minute == sun['sunrise'].minute:
@@ -95,21 +103,20 @@ while True:
         print('between rise and noon')
 	for x in range(0, 100):
 	    tilt(120+x)
-	    if x < 10:
-		x = 10
 	    cam_pan = x
-	    #tilt(120+x)
+	    #if x < 10:
+	    #    tilt(120+10)
 	    pan(cam_pan)
 	    sleep(((minutesBetweenRiseNoon*60)-120)/100)
 
     #if time is noon run sunnoon function
-    if loc_dt.now().hour == sun['noon'].hour:
+    if loc_dt.hour == sun['noon'].hour:
         if loc_dt.minute == sun['noon'].minute:
             sunnoon()
             print('test sunoon')
 
     #if time is after noon loop till sunset
-    if loc_dt.hour == sun['noon'].hour and loc_dt.now().minute > sun['noon'].minute:
+    if loc_dt.hour == sun['noon'].hour and loc_dt.minute > sun['noon'].minute:
         print('between noon and set')
         for x in range(100, 220):
             cam_pan = x
@@ -118,7 +125,18 @@ while True:
             sleep(((minutesBetweenNoonSet*60)-120)/120)
 
     #if time is noon run sunset function
-    if loc_dt.now().hour == sun['sunset'].hour:
+    if loc_dt.hour == sun['sunset'].hour:
         if loc_dt.minute == sun['nsunset'].minute:
             sunset()
             print('test sunset')
+    print('fuck')
+    #if time is after sunset run sunrise function
+    if loc_dt.hour > sun['sunset'].hour:
+        #if loc_dt.minute >= sun['sunset'].minute:
+        sunrise()
+        print('sunset')
+
+    print('sunset hour')
+    print(sun['sunset'].hour)
+    print('now hour')
+    print(loc_dt.hour)
