@@ -75,7 +75,7 @@ def sunnoon():
 def sunset():
     global cam_pan, cam_tilt
     cam_pan = 220
-    cam_tilt = 120
+    cam_tilt = 320
     pan(cam_pan)
     tilt(cam_tilt)
     print('test sunset')
@@ -120,7 +120,7 @@ while True:
         print('between noon and set')
         for x in range(100, 220):
             cam_pan = x
-	    tilt(320-x)
+	    tilt(120+x)
             pan(cam_pan)
             sleep(((minutesBetweenNoonSet*60)-120)/120)
 
