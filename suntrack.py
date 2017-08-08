@@ -75,7 +75,7 @@ def sunnoon():
 def sunset():
     global cam_pan, cam_tilt
     cam_pan = 220
-    cam_tilt = 320
+    cam_tilt = 340
     pan(cam_pan)
     tilt(cam_tilt)
     print('test sunset')
